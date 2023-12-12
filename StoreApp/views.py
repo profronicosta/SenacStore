@@ -82,9 +82,18 @@ def contato(request):
 
 
 def cadastro(request):
-    #instanciar o form cliente
-    formulario = ClienteForm()
     mensagem = ''
+    # quando envio o formulario preenchido
+    if request.method == "POST":
+        formulario = ClienteForm(request.POST)
+        if formulario.is_valid():
+            formulario.save()
+            formulario = ClienteForm()
+            mensagem = "Cliente cadastro com sucesso :)"
+        else:
+            mensagem = "Verifique os erros abaixo: "
+    else:
+        formulario = ClienteForm()
 
     context = {
         'form_cadastro' : formulario,
